@@ -1,0 +1,9 @@
+# Default owner for everything
+* @rishabhk571
+
+# Security sensitive files require explicit maintainer review
+/manifest.json @rishabhk571
+/background.js @rishabhk571
+/content.js @rishabhk571
+/tokenizer.js @rishabhk571
+/popup.js @rishabhk571
