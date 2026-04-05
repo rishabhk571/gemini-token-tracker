@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Token Meter Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #f5f4f0;
+      --bg-secondary: #ecebdf;
+      --border-soft: rgba(0, 0, 0, 0.08);
+      --text-main: #2b2b2b;
+      --text-muted: #5f5f5f;
+      --accent-base: #4a4a4a;
+      --accent-blue: #3b82f6;
+      --accent-blue-bg: #eff6ff;
+      --warn-soft: #fef3c7;
+      --warn-text: #92400e;
+      --alert-soft: #fee2e2;
+      --alert-text: #991b1b;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --shadow-premium: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --font-stack: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #242424;
+      --border-soft: rgba(255, 255, 255, 0.1);
+      --text-main: #e5e5e5;
+      --text-muted: #a3a3a3;
+      --accent-base: #8c8c8c;
+      --accent-blue: #3b82f6;
+      --accent-blue-bg: #1f2937;
+      --warn-soft: #4c3b1f;
+      --warn-text: #f59e0b;
+      --alert-soft: #4b1e1e;
+      --alert-text: #ef4444;
+      --shadow-premium: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    html {
+      background: var(--bg-primary);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    body {
+      width: 380px;
+      font-family: var(--font-stack);
+      font-size: 13px;
+      background: var(--bg-primary);
+      color: var(--text-main);
+      padding: 18px;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+      font-weight: 400;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a1a; }
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.55;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: stretch;
+    }
+
+    input[type="password"] {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      outline: none;
+      background: var(--bg-primary);
+      color: var(--text-main);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="password"]:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px var(--accent-blue-bg);
+    }
+
+    button {
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    #btn-save {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+    #btn-save:hover { background: #2f6fe0; }
+
+    #btn-clear {
+      width: 100%;
+      background: transparent;
+      color: var(--text-muted);
+      border-color: var(--border-soft);
+    }
+    #btn-clear:hover { background: var(--bg-primary); }
+
+    .status {
+      font-size: 12px;
+      min-height: 18px;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: var(--radius-md);
+      display: none;
+      border: 1px solid var(--border-soft);
+    }
+    .status.ok    { display: block; background: var(--accent-blue-bg); color: var(--accent-blue); }
+    .status.error { display: block; background: var(--alert-soft); color: var(--alert-text); }
+    .status.info  { display: block; background: var(--bg-secondary); color: var(--text-muted); }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+    }
+
+    .toggle-label { font-weight: 500; }
+    .toggle-sub   { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Toggle switch */
+    .switch { position: relative; width: 38px; height: 22px; flex: 0 0 auto; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: var(--border-soft);
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: 1px solid var(--border-soft);
+    }
+    .slider:before {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      left: 3px; bottom: 3px;
+      background: var(--bg-primary);
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+    input:checked + .slider { background: var(--accent-blue); }
+    input:checked + .slider:before { transform: translateX(16px); }
+
+    .divider { height: 1px; background: var(--border-soft); margin: 14px 0; }
+
+    
+    .footer-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-soft);
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-soft);
+      flex: 0 0 auto;
+    }#key-section {
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      background: var(--bg-secondary);
+      margin-bottom: 12px;
+    }
+
+    .key-status {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .key-status span { font-weight: 600; color: var(--accent-blue); }
+
+    .key-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .key-edit {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--accent-blue);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+    }
+    .key-edit:hover {
+      color: #2f6fe0;
+    }
+
+    .is-hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <h2>Token Meter Settings</h2>
+  <p class="subtitle">
+    Counts tokens locally from the current chat and uploads. Turn on API mode for exact counts.
+  </p>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Use countTokens API</div>
+        <div class="toggle-sub">Exact counts via Google's countTokens endpoint</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggle-api" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div id="key-section">
+      <label for="input-key">Google AI Studio API Key</label>
+      <div class="key-status-row">
+        <p class="key-status" id="key-status">No API key saved</p>
+        <button id="btn-edit" class="key-edit is-hidden" type="button">Edit</button>
+      </div>
+      <div id="key-edit-fields">
+        <div class="input-row">
+          <input type="password" id="input-key" placeholder="AIza..." autocomplete="off" />
+          <button id="btn-save">Save</button>
+        </div>
+        <button id="btn-clear">Clear saved key</button>
+      </div>
+    </div>
+
+    <div id="status-msg" class="status"></div>
+
+    <div class="divider"></div>
+  <div class="footer-note" role="note">
+    <span class="info-icon" aria-hidden="true">i</span>
+    <span>Fallback: heuristic counts when API is off or key is missing.</span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
