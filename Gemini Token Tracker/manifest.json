@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gemini Live Token Meter",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Real-time token usage meter — uses mammoth.js for accurate .docx counting.",
   "permissions": [
     "storage",
