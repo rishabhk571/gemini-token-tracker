@@ -508,6 +508,7 @@ const TokenMeterUI = (() => {
    *   tierSource?: string,
    *   tierSignal?: string,
    *   tierAmbiguous?: boolean,
+   *   canClearHistoryAttachmentCache?: boolean,
    *   state: 'safe'|'warn'|'alert',
    *   pct: number
    * }} data
@@ -599,9 +600,7 @@ const TokenMeterUI = (() => {
     } // Clear button - only shown when history-storage ghost attachment is active
     const clearBtn = document.getElementById("gtm-history-clear");
     if (clearBtn) {
-      const isHistoryGhost =
-        data.estimateText === "Persistent attachment" &&
-        (data.attachmentTokens || 0) > 0;
+      const isHistoryGhost = data.canClearHistoryAttachmentCache === true;
       clearBtn.classList.toggle("gtm-hidden", !isHistoryGhost);
 
       // Bind click handler once; subsequent update() calls reuse it
