@@ -60,7 +60,13 @@
       if (data.type !== 'GTM_CANVAS_TEXT_REQUEST') return;
       const text = getCanvasText();
       window.postMessage(
-        { type: 'GTM_CANVAS_TEXT_RESPONSE', text: text || '' },
+        {
+          type: 'GTM_CANVAS_TEXT_RESPONSE',
+          text: text || '',
+          requestId: data.requestId || '',
+          chatId: data.chatId || '',
+          routeKey: data.routeKey || '',
+        },
         '*'
       );
     } catch (_) {}
